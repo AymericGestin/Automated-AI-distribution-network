@@ -1,5 +1,8 @@
 import pandas as pd
 
+#fichier 1,2 et 3: format csv avec séparateur ";" correspondant à chaque feuille excel exporter
+#problem: nom du fichier pddl renvoyé 
+
 def ecriture_problem(fichier1,fichier2,fichier3,problem):
     with open(problem, 'w') as f:
         Points = pd.read_csv(fichier1,sep=";")
@@ -25,7 +28,7 @@ def ecriture_problem(fichier1,fichier2,fichier3,problem):
         
         # is primary
         for x in dico_primary.keys():
-            f.write("\t(is-primaray "+x+")\n")
+            f.write("\t(is-primary "+x+")\n")
         
         
         f.write("\t")
@@ -150,6 +153,7 @@ def ecriture_problem(fichier1,fichier2,fichier3,problem):
         f.write("\n(:goal (and")
         for i in range (TR.shape[0]):
             f.write("\n\t")
+            ouvert=int(TR.values[i][2])
             node_depart=int(TR.values[i][0])
             node_arrive=int(TR.values[i][1])
             if ("P"+str(node_depart)) in dico_primary.keys():
@@ -192,6 +196,8 @@ def ecriture_problem(fichier1,fichier2,fichier3,problem):
                 f.write("\n\t") 
         f.write(")\n)\n)")
             
-ecriture_problem("point_Reseau_68.csv","RI_Reseau_68.csv","TR_Reseau_68.csv","problem_68.txt")
-ecriture_problem("point_Reseau_10.csv","RI_Reseau_10.csv","TR_Reseau_10.csv","problem_10.txt")
-ecriture_problem("point_Reseau_16.csv","RI_Reseau_16.csv","TR_Reseau_16.csv","problem_16.txt")
+ecriture_problem("C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/point_Reseau_68.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/RI_Reseau_68.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/TR_Reseau_68.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/problem_68.pddl")
+ecriture_problem("C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/point_Reseau_10.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/RI_Reseau_10.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/TR_Reseau_10.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/problem_10.pddl")
+ecriture_problem("C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/point_Reseau_16.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/RI_Reseau_16.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/TR_Reseau_16.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/problem_16.pddl")
+ecriture_problem("C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/point_Reseau_68_V2.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/RI_Reseau_68_V2.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/TR_Reseau_68_V2.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/problem_68_V2.pddl")
+ecriture_problem("C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/point_Reseau_6.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/RI_Reseau_6b.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/TR_Reseau_6.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Code_ecriture_pddl/problem_6b.pddl")

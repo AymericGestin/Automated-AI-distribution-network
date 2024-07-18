@@ -1,0 +1,23 @@
+Numero du noeud;Type;X;Y;Presence NOS reseau initial;Presence NOS reseau final;P (pu);Q(pu)
+1;Secondary substation;2;1,5;1;0;0,02;0,008
+2;Secondary substation;4,5;1,5;0;0;0,037173758;0,014869503
+3;Secondary substation;2;-1,5;0;1;0,013809604;0,005523842
+4;Secondary substation;3,5;0;1;1;0,037401276;0,01496051
+5;Secondary substation;3,5;-3;0;0;0,028970777;0,011588311
+6;Secondary substation;5,5;-2;0;0;0,012926212;0,005170485
+7;Primary substation;0;0;0;0;0;0
+8;Primary substation;7;0;0;0;0;0
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
