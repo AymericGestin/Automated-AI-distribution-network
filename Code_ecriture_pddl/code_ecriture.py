@@ -1,5 +1,7 @@
 import pandas as pd
-
+import os
+#chemin vers le dossier Automated-AI-distribution-network
+path=os.path.dirname(os.path.dirname(__file__))
 #fichier 1,2 et 3: format csv avec séparateur ";" correspondant à chaque feuille excel exporter
 #problem: nom du fichier pddl renvoyé 
 
@@ -196,7 +198,7 @@ def ecriture_problem(fichier1,fichier2,fichier3,problem):
                 f.write("\n\t") 
         f.write(")\n)\n)")
             
-ecriture_problem("C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/point_Reseau_68.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/RI_Reseau_68.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/TR_Reseau_68.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/problem_68.pddl")
-ecriture_problem("C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/point_Reseau_10.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/RI_Reseau_10.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/TR_Reseau_10.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/problem_10.pddl")
-ecriture_problem("C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/point_Reseau_16.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/RI_Reseau_16.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/TR_Reseau_16.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/problem_16.pddl")
-ecriture_problem("C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/point_Reseau_6.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/RI_Reseau_6b.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/TR_Reseau_6.csv","C:/Users/Aymeric/Documents/GitHub/Automated-AI-distribution-network/Fichier CSV + problem.pddl/problem_6b.pddl")
+ecriture_problem(os.path.join(path,"Fichier CSV + problem.pddl","point_Reseau_68.csv"),os.path.join(path,"Fichier CSV + problem.pddl","RI_Reseau_68.csv"),os.path.join(path,"Fichier CSV + problem.pddl","TR_Reseau_68.csv"),os.path.join(path,"Fichier CSV + problem.pddl","problem_68.csv"))
+ecriture_problem(os.path.join(path,"Fichier CSV + problem.pddl","point_Reseau_10.csv"),os.path.join(path,"Fichier CSV + problem.pddl","RI_Reseau_10.csv"),os.path.join(path,"Fichier CSV + problem.pddl","TR_Reseau_10.csv"),os.path.join(path,"Fichier CSV + problem.pddl","problem_10.csv"))
+ecriture_problem(os.path.join(path,"Fichier CSV + problem.pddl","point_Reseau_16.csv"),os.path.join(path,"Fichier CSV + problem.pddl","RI_Reseau_16.csv"),os.path.join(path,"Fichier CSV + problem.pddl","TR_Reseau_16.csv"),os.path.join(path,"Fichier CSV + problem.pddl","problem_16.csv"))
+ecriture_problem(os.path.join(path,"Fichier CSV + problem.pddl","point_Reseau_6.csv"),os.path.join(path,"Fichier CSV + problem.pddl","RI_Reseau_6.csv"),os.path.join(path,"Fichier CSV + problem.pddl","TR_Reseau_6.csv"),os.path.join(path,"Fichier CSV + problem.pddl","problem_6b.csv"))
