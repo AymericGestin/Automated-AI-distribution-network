@@ -198,7 +198,7 @@ def ecriture_problem(fichier1,fichier2,fichier3,problem):
                 f.write("\n\t") 
         f.write(")\n)\n)")
             
-ecriture_problem(os.path.join(path,"Fichier CSV + problem.pddl","point_Reseau_68.csv"),os.path.join(path,"Fichier CSV + problem.pddl","RI_Reseau_68.csv"),os.path.join(path,"Fichier CSV + problem.pddl","TR_Reseau_68.csv"),os.path.join(path,"Fichier CSV + problem.pddl","problem_68.csv"))
-ecriture_problem(os.path.join(path,"Fichier CSV + problem.pddl","point_Reseau_10.csv"),os.path.join(path,"Fichier CSV + problem.pddl","RI_Reseau_10.csv"),os.path.join(path,"Fichier CSV + problem.pddl","TR_Reseau_10.csv"),os.path.join(path,"Fichier CSV + problem.pddl","problem_10.csv"))
-ecriture_problem(os.path.join(path,"Fichier CSV + problem.pddl","point_Reseau_16.csv"),os.path.join(path,"Fichier CSV + problem.pddl","RI_Reseau_16.csv"),os.path.join(path,"Fichier CSV + problem.pddl","TR_Reseau_16.csv"),os.path.join(path,"Fichier CSV + problem.pddl","problem_16.csv"))
-ecriture_problem(os.path.join(path,"Fichier CSV + problem.pddl","point_Reseau_6.csv"),os.path.join(path,"Fichier CSV + problem.pddl","RI_Reseau_6.csv"),os.path.join(path,"Fichier CSV + problem.pddl","TR_Reseau_6.csv"),os.path.join(path,"Fichier CSV + problem.pddl","problem_6b.csv"))
+ecriture_problem(os.path.join(path,"CSV_Problem","point_Reseau_68.csv"),os.path.join(path,"CSV_Problem","RI_Reseau_68.csv"),os.path.join(path,"CSV_Problem","TR_Reseau_68.csv"),os.path.join(path,"CSV_Problem","problem_68.csv"))
+ecriture_problem(os.path.join(path,"CSV_Problem","point_Reseau_10.csv"),os.path.join(path,"CSV_Problem","RI_Reseau_10.csv"),os.path.join(path,"CSV_Problem","TR_Reseau_10.csv"),os.path.join(path,"CSV_Problem","problem_10.csv"))
+ecriture_problem(os.path.join(path,"CSV_Problem","point_Reseau_16.csv"),os.path.join(path,"CSV_Problem","RI_Reseau_16.csv"),os.path.join(path,"CSV_Problem","TR_Reseau_16.csv"),os.path.join(path,"CSV_Problem","problem_16.csv"))
+ecriture_problem(os.path.join(path,"CSV_Problem","point_Reseau_6.csv"),os.path.join(path,"CSV_Problem","RI_Reseau_6.csv"),os.path.join(path,"CSV_Problem","TR_Reseau_6.csv"),os.path.join(path,"CSV_Problem","problem_6b.csv"))
