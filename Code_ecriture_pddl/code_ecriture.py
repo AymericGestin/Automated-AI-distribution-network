@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+
 #chemin vers le dossier Automated-AI-distribution-network
 path=os.path.dirname(os.path.dirname(__file__))
 #fichier 1,2 et 3: format csv avec séparateur ";" correspondant à chaque feuille excel exporter
