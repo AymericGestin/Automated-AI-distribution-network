@@ -9,5 +9,3 @@ command=ligne1+ligne2
 print(command)
 #subprocess.Popen(command)
 os.system(command)
-#os.system('cmd /k "docker run -it "+path+":/root/projects/benchmarks lapkt/lapkt-public"')
-#./siw_plus --domain /root/projects/benchmarks/CSV_Problem/domainv8.pddl --problem /root/projects/benchmarks/CSV_Problem/problem_16.pddl
