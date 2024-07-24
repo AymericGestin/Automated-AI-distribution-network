@@ -1,7 +1,6 @@
 from code_ecriture import *
 from xlxs_to_csv import *
 import os
-import subprocess
 
 f_xlxs_to_csv("68")
 f_xlxs_to_csv("10")
