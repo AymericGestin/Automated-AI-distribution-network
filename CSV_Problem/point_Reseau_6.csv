@@ -1,9 +1,9 @@
-Numero du nœud;Type;X;Y;Presence NOS reseau initial;Presence NOS reseau final;P (pu);Q(pu)
+Numero du noeud;Type;X;Y;Presence NOS reseau initial;Presence NOS reseau final;P (pu);Q(pu)
 1;Secondary;2.0;1.5;1;0;0.02;0.008
 2;Secondary;4.5;1.5;0;0;0.0371737581122686;0.0148695032449074
 3;Secondary;2.0;-1.5;0;1;0.0138096044888052;0.00552384179552208
 4;Secondary;3.5;0.0;1;1;0.0374012756841706;0.0149605102736682
 5;Secondary;3.5;-3.0;0;0;0.0289707773867623;0.0115883109547049
 6;Secondary;5.5;-2.0;0;0;0.0129262121499823;0.00517048485999292
-7;Primary;0.0;0.0;0;0;0.0;0.0
-8;Primary;7.0;0.0;0;0;0.0;0.0
+7;Primary substation;0.0;0.0;0;0;0.0;0.0
+8;Primary substation;7.0;0.0;0;0;0.0;0.0

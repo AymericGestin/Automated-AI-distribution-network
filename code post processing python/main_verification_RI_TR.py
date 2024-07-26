@@ -3,6 +3,8 @@ import os
 from Trace_reseau import * 
 from network_topology_validator import *
 from network_topology_validator2 import *
+from network_for_lf import *
+from lf_computation import *
 
 def setdiff(a, b):
     return list(set(a) - set(b))
@@ -28,8 +30,8 @@ def verification_RI_TR(Num_reseau):
     X=Noeuds['X'].values.tolist()
     Y=Noeuds['Y'].values.tolist()
     Num_noeuds=Noeuds['Numero du noeud'].values.tolist()
-    # trace_reseau(X,Y,Num_noeuds,Reseau_initial)
-    # trace_reseau(X,Y,Num_noeuds,Reseau_final)
+    trace_reseau(X,Y,Num_noeuds,Reseau_initial)
+    trace_reseau(X,Y,Num_noeuds,Reseau_final)
 
     #Topology Validator reseau initial
     max_num_nodes=max(Num_noeuds)
@@ -95,7 +97,13 @@ def verification_RI_TR(Num_reseau):
         print("TR: condition n-1 respecté pour tout les noeuds sources")
     else:
         print("TR:n-1 non respecté")
-
+#load flow check
+    network=network_for_lf(Num_noeuds,Noeuds,Reseau_initial,Parametres)
+    print(network)
+    lf(network)
+    # network=network_for_lf(Num_noeuds,Noeuds,Reseau_final,Parametres)
+    # lf(network)
     return 0
+verification_RI_TR("6")
 #verification_RI_TR("10")
-verification_RI_TR("16")
+#verification_RI_TR("16")
