@@ -1,4 +1,4 @@
-Numero du nœud;Type;X;Y;NOS reseau initial;NOS reseau final;P (pu);Q(pu)
+Numero du noeud;Type;X;Y;NOS reseau initial;NOS reseau final;P (pu);Q(pu)
 1;Secondary substation;1.4;9.65;0;0;0.01;0.009
 2;Secondary substation;1.4;9.2;0;0;0.006;0.004
 3;Secondary substation;1.4;8.7;0;0;0.015;0.013

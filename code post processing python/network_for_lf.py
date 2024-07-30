@@ -17,7 +17,7 @@ def network_for_lf(Num_noeuds,Noeuds,Reseau,Parametres):
             gen[k][4]=-300
             gen[k][8]=300
             gen[k][9]=-300
-            gen[k][5]=1
+            gen[k][5]=1.02
             k+=1
         else:
             bus[i][1]=1
@@ -25,7 +25,6 @@ def network_for_lf(Num_noeuds,Noeuds,Reseau,Parametres):
         bus[i][3]=Noeuds.values[i][7]*S_base
         bus[i][7]=1
         bus[i][8]=0
-        bus[i][6]=1
         bus[i][11]=1.1
         bus[i][12]=0.9
         bus[i][9]=Ubase
@@ -33,10 +32,12 @@ def network_for_lf(Num_noeuds,Noeuds,Reseau,Parametres):
     for i in range(len(Reseau)):
         line[i][0]=int(Reseau.values[i][0])
         line[i][1]=int(Reseau.values[i][1])
-        line[i][3]=Reseau.values[i][3]
-        line[i][4]=Reseau.values[i][4]
+        line[i][2]=Reseau.values[i][3]
+        line[i][3]=Reseau.values[i][4]
         if Reseau.values[i][2] == 1:
             line[i][10]=0
+            line[i][2]=99999
+            line[i][3]=99999
         else:
             line[i][10]=1
     ppc = {

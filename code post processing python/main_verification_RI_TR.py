@@ -97,13 +97,30 @@ def verification_RI_TR(Num_reseau):
         print("TR: condition n-1 respecté pour tout les noeuds sources")
     else:
         print("TR:n-1 non respecté")
-#load flow check
+#load flow check RI
     network=network_for_lf(Num_noeuds,Noeuds,Reseau_initial,Parametres)
-    print(network)
-    lf(network)
-    # network=network_for_lf(Num_noeuds,Noeuds,Reseau_final,Parametres)
-    # lf(network)
-    return 0
-verification_RI_TR("6")
+    I,V=lf(network)
+    if len(I) !=0:
+        for k in range (len(Reseau_initial.values[5])):
+            if I[k]>Reseau_initial.values[k][5]:
+                print("\ncontraintes courant")
+        for v in V:
+            if v>1.05 or v<0.95:
+                print("\ncontraintes tension")
+
+#lf check TR
+    network=network_for_lf(Num_noeuds,Noeuds,Reseau_final,Parametres)
+    I,V=lf(network)
+    if len(I) !=0:
+        for k in range (len(Reseau_initial.values[5])):
+            if I[k]>Reseau_initial.values[k][5]:
+                print("\ncontraintes courant")
+        for v in V:
+            if v>1.05 or v<0.95:
+                print("\ncontraintes tension")
+
+    return Reseau_initial,Reseau_final,Noeuds,Parametres
+#verification_RI_TR("6")
 #verification_RI_TR("10")
 #verification_RI_TR("16")
+#verification_RI_TR("68")
