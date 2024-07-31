@@ -120,7 +120,7 @@ def verification_RI_TR(Num_reseau):
                 print("\ncontraintes tension")
 
     return Reseau_initial,Reseau_final,Noeuds,Parametres
-#verification_RI_TR("6")
+# verification_RI_TR("6")
 #verification_RI_TR("10")
 #verification_RI_TR("16")
 #verification_RI_TR("68")

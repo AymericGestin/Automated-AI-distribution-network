@@ -1,10 +1,10 @@
 from main_verification_RI_TR import *
-Reseau_initial,Reseau_final,Noeuds,Parametres=verification_RI_TR("16")
+Reseau_initial,Reseau_final,Noeuds,Parametres=verification_RI_TR("6")
 X=Noeuds['X'].values.tolist()
 Y=Noeuds['Y'].values.tolist()
 Num_noeuds=Noeuds['Numero du noeud'].values.tolist()
 path=os.path.dirname(os.path.dirname(__file__))
-fichier=open(os.path.join(path,"Plan","plan_16_aymeric.txt"),"r")
+fichier=open(os.path.join(path,"Plan","plan_6.txt"),"r")
 plan=fichier.read()
 fichier.close()
 Reseau_intermediaire=Reseau_initial
@@ -124,7 +124,7 @@ for action in list_action[:len(list_action)-1]:
     if compteur_ok == len(source_node):
         print("Reseau intermediaire n°"+str(cont_action)+": condition n-1 respecté pour tout les noeuds sources")
     else:
-        print("Reseau intermediaire n°"+str(cont_action)+"n-1 non respecté")
+        print("Reseau intermediaire n°"+str(cont_action)+": n-1 non respecté")
 #calcul du load flow pour le reseau intermediaire
     if compteur_ok == len(source_node):
         network=network_for_lf(Num_noeuds,Noeuds,Reseau_final,Parametres)
@@ -142,6 +142,9 @@ for action in list_action[:len(list_action)-1]:
                     cas2=1
         if cas1 ==0 and cas2==0:
             print("pas de containtes électrique")
+    # print(Reseau_intermediaire,action)
+    # trace_reseau(X,Y,Num_noeuds,Reseau_intermediaire)
+    
 trace_reseau(X,Y,Num_noeuds,Reseau_intermediaire)
 trace_reseau(X,Y,Num_noeuds,Reseau_final)
     
