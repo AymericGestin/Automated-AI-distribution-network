@@ -2,6 +2,8 @@ from code_ecriture import *
 from xlxs_to_csv import *
 import os
 from script_planner import *
+# partie principale du code permet l'appel des différentes fonction du work flow 
+#conversion d'excel a csv puis ecriture du pddl puis lancement des planners  
 f_xlxs_to_csv("68")
 f_xlxs_to_csv("10")
 f_xlxs_to_csv("16")
