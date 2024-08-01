@@ -2,7 +2,6 @@ import pandas as pd
 import os
 from Trace_reseau import * 
 from network_topology_validator import *
-from network_topology_validator2 import *
 from network_for_lf import *
 from lf_computation import *
 
@@ -49,7 +48,7 @@ def verification_RI_TR(Num_reseau):
     for i in range (Noeuds.shape[0]):
             if Noeuds.values[i][1] == "Primary substation":
                 source_node.append(Noeuds.values[i][0])
-    pts_isoles=network_topology_validator2(Mi,max_num_nodes,source_node)
+    pts_isoles=network_topology_validator(Mi,max_num_nodes,source_node)
     compteur_ok=0
     for node in source_node:
         M_test=[row[:] for row in M]
@@ -58,7 +57,7 @@ def verification_RI_TR(Num_reseau):
             for j in range(max_num_nodes):
                 M_test[x-1][j]=0
                 M_test[j][x-1]=0
-        pts_isoles=network_topology_validator2(M_test,max_num_nodes,source_node)
+        pts_isoles=network_topology_validator(M_test,max_num_nodes,source_node)
         if pts_isoles==[]:
             compteur_ok+=1
     if compteur_ok == len(source_node):
@@ -81,7 +80,7 @@ def verification_RI_TR(Num_reseau):
     for i in range (Noeuds.shape[0]):
             if Noeuds.values[i][1] == "Primary substation":
                 source_node.append(Noeuds.values[i][0])
-    pts_isoles=network_topology_validator2(Mi,max_num_nodes,source_node)
+    pts_isoles=network_topology_validator(Mi,max_num_nodes,source_node)
     compteur_ok=0
     for node in source_node:
         M_test=[row[:] for row in M]
@@ -90,7 +89,7 @@ def verification_RI_TR(Num_reseau):
             for j in range(max_num_nodes):
                 M_test[x-1][j]=0
                 M_test[j][x-1]=0
-        pts_isoles=network_topology_validator2(M_test,max_num_nodes,source_node)
+        pts_isoles=network_topology_validator(M_test,max_num_nodes,source_node)
         if pts_isoles==[]:
             compteur_ok+=1
     if compteur_ok == len(source_node):
@@ -103,10 +102,10 @@ def verification_RI_TR(Num_reseau):
     if len(I) !=0:
         for k in range (len(Reseau_initial.values[5])):
             if I[k]>Reseau_initial.values[k][5]:
-                print("\ncontraintes courant")
+                print("contraintes courant")
         for v in V:
             if v>1.05 or v<0.95:
-                print("\ncontraintes tension")
+                print("contraintes tension")
 
 #lf check TR
     network=network_for_lf(Num_noeuds,Noeuds,Reseau_final,Parametres)
@@ -114,13 +113,8 @@ def verification_RI_TR(Num_reseau):
     if len(I) !=0:
         for k in range (len(Reseau_initial.values[5])):
             if I[k]>Reseau_initial.values[k][5]:
-                print("\ncontraintes courant")
+                print("contraintes courant")
         for v in V:
             if v>1.05 or v<0.95:
-                print("\ncontraintes tension")
-
+                print("contraintes tension")
     return Reseau_initial,Reseau_final,Noeuds,Parametres
-# verification_RI_TR("6")
-#verification_RI_TR("10")
-#verification_RI_TR("16")
-#verification_RI_TR("68")

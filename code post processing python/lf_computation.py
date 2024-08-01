@@ -38,7 +38,7 @@ def lf(network):
         for i in range(len(branch)):
             I[i] = (V[from_bus[i]] - V[to_bus[i]]) * Y[i]*(S_base/V_base*1000)
 
-        # # Print results (pour regarder les valuers de sortie)
+        # Print results (pour regarder les valuers de sortie de tension et courant)
         # print("Bus Voltages (p.u.):")
         # for i, (mag, ang) in enumerate(zip(V_mag, V_ang)):
         #     print(f"Bus {i+1}: {mag:.4f} ∠ {ang:.2f}°")

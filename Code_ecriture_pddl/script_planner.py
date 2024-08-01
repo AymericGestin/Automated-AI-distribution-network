@@ -11,4 +11,4 @@ def run_planner(Numero_Reseau,methode="dfs_plus",domain="domainv8.pddl"):
     os.system(command)
     return 0
 
-run_planner(6)
+run_planner(68)

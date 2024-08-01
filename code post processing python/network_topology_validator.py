@@ -1,33 +1,36 @@
+def network_topology_validator(M, max_num_nodes, source_node):
+    """
+    Inputs definition:
+    - M = Network connectivity matrix : if node i is connected to node j then
+    M[i][j] = 1 and M[j][i] = 1,
+    - max_num_nodes = node having the highest value in the network,
+    - source_node = list of nodes representing the "energy sources"
+    """
+    
+    C = source_node.copy()
+    pts_isoles = list(range(1, max_num_nodes + 1))
+    
+    for node in source_node:
+        pts_isoles[node - 1] = 0
+    
+    Liste = []
+    
+    while len(C) > 0:
+        for node in C:
+            D = [i + 1 for i, connected in enumerate(M[node - 1]) if connected == 1]
+            M[node - 1] = [0] * max_num_nodes
+            for i in range(max_num_nodes):
+                M[i][node - 1] = 0
+            for d in D:
+                pts_isoles[d - 1] = 0
+            Liste = list(set(Liste + D))
+        C = Liste.copy()
+        Liste = []
+    
+    pts_isoles = [node for node in pts_isoles if node != 0]
+    return pts_isoles
 
-#fonction ayant pour but de déterminer les noeuds isolés à partir d'une matrice de connexion M
-# N1--line1--N2--line2--N3--line3--N4 avec N2 comme source
-# la matrice de connexion serait  
-#M= [0 1 0 0
-#    1 0 1 0
-#    0 1 0 1
-#    0 0 1 0]
-# les 1 aux emplacements [i][j] correspond à une connexion entre le noeud i et le noeud j 
-def network_topology_validator(M,max_num_nodes,source_node):
-    C=source_node
-    pts_isoles=[i for i in range(1,max_num_nodes+1)]
-    for i in range(len(C)):
-        pts_isoles[source_node[i]-1]=0
-    Liste=[]
-    while len(C)>0:
-        for i in range (0,len(C)):
-            D=[]
-            for j in range (max_num_nodes):
-                a=C[i]-1
-                if M[a][j]==1 or M[j][a]==1: 
-                    D.append(j+1)
-                    M[a][j]=0
-                    M[j][a]=0
-                    pts_isoles[j]=0       
-        C=D  
-    pts_isoles= [node for node in pts_isoles if node!=0]
-    return(pts_isoles)
-
-#exemple de l'appel de fonction pour le cas du haut
+# # Example usage:
 # M = [
 #     [0, 1, 0, 0],
 #     [1, 0, 1, 0],
@@ -39,4 +42,3 @@ def network_topology_validator(M,max_num_nodes,source_node):
 
 # isolated_points = network_topology_validator(M, max_num_nodes, source_node)
 # print(isolated_points)
-

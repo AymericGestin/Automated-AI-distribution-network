@@ -1,10 +1,10 @@
-from main_verification_RI_TR import *
-Reseau_initial,Reseau_final,Noeuds,Parametres=verification_RI_TR("6")
+from verification_RI_TR import *
+Reseau_initial,Reseau_final,Noeuds,Parametres=verification_RI_TR("68")
 X=Noeuds['X'].values.tolist()
 Y=Noeuds['Y'].values.tolist()
 Num_noeuds=Noeuds['Numero du noeud'].values.tolist()
 path=os.path.dirname(os.path.dirname(__file__))
-fichier=open(os.path.join(path,"Plan","plan_6.txt"),"r")
+fichier=open(os.path.join(path,"Plan","plan_68.txt"),"r")
 plan=fichier.read()
 fichier.close()
 Reseau_intermediaire=Reseau_initial
@@ -17,7 +17,10 @@ cout_ligne_moy=500
 cont_cout=0
 cont_action=0
 Reseau_fusion=[]
+Liste_reseau_intermediaire_valide=[]
+Liste_reseau_intermediaire_non_valide=[]
 indicateur_cas=0
+
 for action in list_action[:len(list_action)-1]:
     cont_action+=1
     b=action.split()
@@ -109,7 +112,12 @@ for action in list_action[:len(list_action)-1]:
     for i in range (Noeuds.shape[0]):
             if Noeuds.values[i][1] == "Primary substation":
                 source_node.append(Noeuds.values[i][0])
-    pts_isoles=network_topology_validator2(Mi,max_num_nodes,source_node)
+    pts_isoles=network_topology_validator(Mi,max_num_nodes,source_node)
+    compteur_ok_i=0
+    if pts_isoles ==[]:
+        compteur_ok_i=1
+    else:
+        print("pts isoles:",pts_isoles)
     compteur_ok=0
     for node in source_node:
         M_test=[row[:] for row in M]
@@ -118,7 +126,7 @@ for action in list_action[:len(list_action)-1]:
             for j in range(max_num_nodes):
                 M_test[x-1][j]=0
                 M_test[j][x-1]=0
-        pts_isoles=network_topology_validator2(M_test,max_num_nodes,source_node)
+        pts_isoles=network_topology_validator(M_test,max_num_nodes,source_node)
         if pts_isoles==[]:
             compteur_ok+=1
     if compteur_ok == len(source_node):
@@ -127,10 +135,10 @@ for action in list_action[:len(list_action)-1]:
         print("Reseau intermediaire n°"+str(cont_action)+": n-1 non respecté")
 #calcul du load flow pour le reseau intermediaire
     if compteur_ok == len(source_node):
+        cas1,cas2=0,0
         network=network_for_lf(Num_noeuds,Noeuds,Reseau_final,Parametres)
         I,V=lf(network)
         if len(I) !=0:
-            cas1,cas2=0,0
             for k in range (len(Reseau_initial.values[5])):
                 
                 if I[k]>Reseau_initial.values[k][5]:
@@ -142,11 +150,24 @@ for action in list_action[:len(list_action)-1]:
                     cas2=1
         if cas1 ==0 and cas2==0:
             print("pas de containtes électrique")
-    # print(Reseau_intermediaire,action)
+    if cas1==0 and cas2==0 and compteur_ok==len(source_node) and compteur_ok_i==0:
+        Reseau_fusion.append(cont_action)
+        Liste_reseau_intermediaire_valide.append(Reseau_intermediaire)
+    # print(action)
     # trace_reseau(X,Y,Num_noeuds,Reseau_intermediaire)
     
-trace_reseau(X,Y,Num_noeuds,Reseau_intermediaire)
-trace_reseau(X,Y,Num_noeuds,Reseau_final)
-    
+
+#creation des listes d'actions présentes dans le plan permettant d'être toujours valdie 
+Liste_action_groupe=[]
+indice=0
+for num_reseau_fusion in Reseau_fusion:
+    action_groupe=""
+    portion_fusion=list_action[indice:num_reseau_fusion]
+    for action in portion_fusion:
+        action_groupe=action_groupe+action+"\n"
+    Liste_action_groupe.append(action_groupe)
+    indice=num_reseau_fusion
+# for reseau in Liste_reseau_intermediaire_valide:
+#     trace_reseau(X,Y,Num_noeuds,reseau)    
 # trace_reseau(X,Y,Num_noeuds,Reseau_final)
 # trace_reseau(X,Y,Num_noeuds,Reseau_intermediaire)

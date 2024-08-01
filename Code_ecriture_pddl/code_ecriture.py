@@ -6,17 +6,17 @@ path=os.path.dirname(os.path.dirname(__file__))
 #fichier 1,2 et 3: format csv avec séparateur ";" correspondant à chaque feuille excel exporter
 #problem: nom du fichier pddl renvoyé 
 
-def ecriture_problem(fichier1,fichier2,fichier3,problem):
-    with open(problem, 'w') as f:
-        Points = pd.read_csv(fichier1,sep=";")
-        RI = pd.read_csv(fichier2,sep=";")
-        TR = pd.read_csv(fichier3,sep=";")
+def ecriture_problem(Num_reseau):
+    with open(os.path.join(path,"CSV_Problem","problem_"+str(Num_reseau)+".pddl"), 'w') as f:
+        Points = pd.read_csv(os.path.join(path,"CSV_Problem","point_Reseau_"+str(Num_reseau)+".csv"),sep=";")
+        RI = pd.read_csv(os.path.join(path,"CSV_Problem","RI_Reseau_"+str(Num_reseau)+".csv"),sep=";")
+        TR = pd.read_csv(os.path.join(path,"CSV_Problem","TR_Reseau_"+str(Num_reseau)+".csv"),sep=";")
         dico_primary={}
         dico_secondary={}
         dico_ligne_RI={}
         dico_ligne_TR={}
         dico_mutable={}
-        f.write("(define (problem disnet68n) (:domain disnet)\n(:objects\n\t") 
+        f.write("(define (problem disnet"+str(Num_reseau)+"n) (:domain disnet)\n(:objects\n\t") 
         # object et definition dico
         for i in range (Points.shape[0]):
             if Points.values[i][1] == "Primary substation":
