@@ -2,6 +2,7 @@ import os
 import subprocess
 import time
 path=os.path.dirname(os.path.dirname(__file__))
+#fonction pour savoir si docker tourne
 def is_docker_running():
     try:
         # Execute a simple Docker command
@@ -16,7 +17,7 @@ def is_docker_running():
     except FileNotFoundError:
         # Docker command not found (Docker is likely not installed)
         return False
-    
+#fonction pour lancer docker desktop    
 def start_docker_desktop():
     # Path to Docker Desktop executable on Windows
     docker_path = r"C:\Program Files\Docker\Docker\Docker Desktop.exe"
@@ -28,6 +29,13 @@ def start_docker_desktop():
 
     except Exception as e:
         print(f"Failed to start Docker Desktop: {e}")
+
+#fonction qui vérifier que docker est lancé et le run si ce n'est pas le cas 
+#run l'image LAPKT avec le dossier Automated-AI-Distribution-Network comme mount dans un container nommé test
+#run le planner avec le problem au numéro du réseau indiqué 
+#déplace le plan dans le dossier plan 
+#puis supprime le container test
+
 def run_planner(Numero_Reseau,methode="dfs_plus",domain="domainv8.pddl"):
     if is_docker_running() ==False:
         start_docker_desktop()
@@ -45,4 +53,3 @@ def run_planner(Numero_Reseau,methode="dfs_plus",domain="domainv8.pddl"):
         os.system(command)
     return 0
 
-run_planner(6)

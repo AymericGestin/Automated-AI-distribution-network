@@ -1,5 +1,7 @@
 import pandas as pd
 import os
+# extrait l'excel Reseau_"num" dans le dossier Fichier_excel 4 csv correspondant aux feuilles vers le dossier scv_problem
+# Point_Reseau_"num":information sur les bus; TR_Reseau_"num": réseau cible; RI_Reseau_"num" réseau intial; Parametre: paramètres  
 def f_xlxs_to_csv(Num_reseau):
     path=os.path.dirname(os.path.dirname(__file__))
     excel_file_path=os.path.join(path,"Fichier_excel","Reseau_"+Num_reseau+".xlsx")

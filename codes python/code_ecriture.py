@@ -3,15 +3,16 @@ import os
 
 #chemin vers le dossier Automated-AI-distribution-network
 path=os.path.dirname(os.path.dirname(__file__))
-#fichier 1,2 et 3: format csv avec séparateur ";" correspondant à chaque feuille excel exporter
-#problem: nom du fichier pddl renvoyé 
-
+ 
+#fonction qui écrit un fichier pddl correspondant au problème associé du réseau et pour le domaine domainv8 uniquement
+# requiert le numéro du réseau à étudier ainsi que la présence des fichiers csv (Point,Target Réseau, Réseau initial) avec la bonne
+# syntaxe dans le dossier CSV_Problem et renvoie le fichier ppdl dans le même dossier 
 def ecriture_problem(Num_reseau):
-    with open(os.path.join(path,"CSV_Problem","problem_"+str(Num_reseau)+".pddl"), 'w') as f:
-        Points = pd.read_csv(os.path.join(path,"CSV_Problem","point_Reseau_"+str(Num_reseau)+".csv"),sep=";")
+    with open(os.path.join(path,"CSV_Problem","problem_"+str(Num_reseau)+".pddl"), 'w') as f: 
+        Points = pd.read_csv(os.path.join(path,"CSV_Problem","point_Reseau_"+str(Num_reseau)+".csv"),sep=";") #lecture des csv
         RI = pd.read_csv(os.path.join(path,"CSV_Problem","RI_Reseau_"+str(Num_reseau)+".csv"),sep=";")
         TR = pd.read_csv(os.path.join(path,"CSV_Problem","TR_Reseau_"+str(Num_reseau)+".csv"),sep=";")
-        dico_primary={}
+        dico_primary={} #definition des dictionnaires nécessaires
         dico_secondary={}
         dico_ligne_RI={}
         dico_ligne_TR={}
@@ -19,11 +20,11 @@ def ecriture_problem(Num_reseau):
         f.write("(define (problem disnet"+str(Num_reseau)+"n) (:domain disnet)\n(:objects\n\t") 
         # object et definition dico
         for i in range (Points.shape[0]):
-            if Points.values[i][1] == "Primary substation":
+            if Points.values[i][1] == "Primary substation": #déclaration des stations primaires et mis à jour du dico contenant les stations primaires
                 f.write("P"+str(int(Points.values[i][0]))+" ")
                 dico_primary.update({"P"+str(int(Points.values[i][0])):0})
         f.write("- Primary\n\t")
-        for i in range (Points.shape[0]):
+        for i in range (Points.shape[0]): # même chose pour les stations secondaires
             if Points.values[i][1] == "Secondary substation":
                 f.write("S"+str(int(Points.values[i][0]))+" ")
                 dico_secondary.update({"S"+str(int(Points.values[i][0])):0})
@@ -32,16 +33,12 @@ def ecriture_problem(Num_reseau):
         # is primary
         for x in dico_primary.keys():
             f.write("\t(is-primary "+x+")\n")
-        
-        
         f.write("\t")
         for i in range (RI.shape[0]):
             ouvert=int(RI.values[i][2])
             node_depart=int(RI.values[i][0])
             node_arrive=int(RI.values[i][1])
-            
-            
-            #update dico pour full et available
+            #update de 2 dico pour full et available: compte le nombre d'occurence pour chaque noeuds pour savoir ensuite si le noeud est full ou avaiable 
             if ("P"+str(node_depart)) in dico_primary.keys():
                 dico_primary["P"+str(node_depart)]=dico_primary["P"+str(node_depart)]+1
             if ("P"+str(node_arrive)) in dico_primary.keys():
@@ -50,8 +47,8 @@ def ecriture_problem(Num_reseau):
                 dico_secondary["S"+str(node_depart)]=dico_secondary["S"+str(node_depart)]+1
             if ("S"+str(node_arrive)) in dico_secondary.keys():
                 dico_secondary["S"+str(node_arrive)]=dico_secondary["S"+str(node_arrive)]+1
-            
-            
+            # update le dictionnaire des réseaux initial sous la forme {(Point départ Point arrivée): 1 ou 0,(Point arrivée Point départ):1 ou 0,...}
+            # si ligne S1 S2 ouverte on aurait {"S1 S2":1,"S2 S1":1}
             if ("P"+str(node_depart)) in dico_primary.keys():
                 dico_ligne_RI.update({"S"+str(node_arrive)+" P"+str(node_depart):ouvert})
                 dico_ligne_RI.update({"P"+str(node_depart)+" S"+str(node_arrive):ouvert})
@@ -62,7 +59,7 @@ def ecriture_problem(Num_reseau):
                 dico_ligne_RI.update({"S"+str(node_arrive)+" S"+str(node_depart):ouvert})
                 dico_ligne_RI.update({"S"+str(node_depart)+" S"+str(node_arrive):ouvert})
             
-            #connected closed open feed
+            # Partie connected closed open feed
             if ("P"+str(node_depart)) in dico_primary.keys():
                 f.write("(connected P"+ str(node_depart)+" S"+str(node_arrive)+")")
                 f.write("(connected S"+ str(node_arrive)+" P"+str(node_depart)+")")
@@ -97,7 +94,7 @@ def ecriture_problem(Num_reseau):
                     f.write("(closed S"+ str(node_depart)+" S"+str(node_arrive)+") ")
                     f.write("(closed S"+ str(node_arrive)+" S"+str(node_depart)+")")
             f.write("\n\t")
-        # feed d'un primaire à un primaire:
+        # feed d'un primaire à un primaire (tout les primaires sont considérés comme feed eux même dans ce domaine)
         for i in dico_primary.keys():
             f.write("(feed "+i+" "+i+")\n\t")
                                       
@@ -115,7 +112,7 @@ def ecriture_problem(Num_reseau):
                 f.write("(available "+i[0]+")\n\t")
          
         
-        #update du dictionnaire TR
+        #update du dictionnaire TR même construction que pour le réseau initiale
         for i in range (TR.shape[0]):
             ouvert=int(TR.values[i][2])
             node_depart=int(TR.values[i][0])
@@ -131,28 +128,25 @@ def ecriture_problem(Num_reseau):
                 dico_ligne_TR.update({"S"+str(node_depart)+" S"+str(node_arrive):ouvert})        
         
         
-        # ecriture buildable
+        # ecriture buildable (buildable si une ligne est présente dans le réseau cible mais pas dans celui de départ)
         for i in dico_ligne_TR.keys():
             if i not in dico_ligne_RI.keys():
                 f.write("(buildable "+i+")")
                 f.write("\n\t")
-                dico_mutable.update({i[:i.index(" ")]:0})
+                dico_mutable.update({i[:i.index(" ")]:0}) # ajout des stations "buildables" dans le dico des mutable
             if i in dico_ligne_RI.keys():
-                # if (dico_ligne_RI[i]==1 and dico_ligne_TR[i]==0):
-                #     f.write("(buildable "+i+")")
-                #     f.write("\n\t")
                 if dico_ligne_RI[i] != dico_ligne_TR[i]:
-                    dico_mutable.update({i[:i.index(" ")]:0})
+                    dico_mutable.update({i[:i.index(" ")]:0}) 
         
-        # ecriture mutable
+        # ecriture mutable (mutable correspond à tout les stations ou a lieu un changement removed/add ou passage d'ouvert à fermé)
         for i in dico_ligne_RI.keys():
             if i not in dico_ligne_TR.keys():
-                dico_mutable.update({i[:i.index(" ")]:0})
+                dico_mutable.update({i[:i.index(" ")]:0}) #ajout des cas de changement ouvert à ferme dans les mutable
         for i in dico_mutable.keys():
             f.write("(mutable "+i+")\n\t")
         f.write(")")
                     
-        #partie goal
+        #partie goal qui contient de nouveau les informations sur connected open closed mais pour le Réseau cible
         f.write("\n(:goal (and")
         for i in range (TR.shape[0]):
             f.write("\n\t")
@@ -191,11 +185,12 @@ def ecriture_problem(Num_reseau):
                     f.write("(closed S"+ str(node_arrive)+" S"+str(node_depart)+")")
             
             
-        # partie remove de goal
+        # partie remove de goal (fonctionne comme buildable mais dans l'autre sens)
         f.write("\n\t")
         for i in dico_ligne_RI.keys():
             if i not in dico_ligne_TR.keys():
                 f.write("(removed "+i+")")
                 f.write("\n\t") 
         f.write(")\n)\n)")
-            
+
+

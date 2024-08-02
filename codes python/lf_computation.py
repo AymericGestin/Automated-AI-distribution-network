@@ -1,10 +1,6 @@
 from pypower.api import runpf,ppoption
 import numpy as np
-
-# Define your custom power network data without generators
-
-
-# Run power flow
+#fonction qui permet de garder et de convertir les résultats qui nous intéresse c'est à dire courant (A) et tension (p.u) 
 def lf(network):
     options = ppoption(VERBOSE=0, OUT_ALL=0) #pour ne pas avoir le résultat affiché sur la console
     results, success = runpf(network,options)

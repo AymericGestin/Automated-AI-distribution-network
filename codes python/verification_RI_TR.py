@@ -5,9 +5,11 @@ from network_topology_validator import *
 from network_for_lf import *
 from lf_computation import *
 
+
+
 def setdiff(a, b):
     return list(set(a) - set(b))
-
+#vérifie les conditions N-1, le power flow, et la présence de noeud isolé des RI et TR du numéro donné 
 def verification_RI_TR(Num_reseau):
     path=os.path.dirname(os.path.dirname(__file__))
     #lecture des tableau d'entree
@@ -18,6 +20,8 @@ def verification_RI_TR(Num_reseau):
     Voltage_ref_transfo=Parametres.values[0][1]
     Sbase=Parametres.values[1][1]
     Ubase=Parametres.values[2][1]
+    #trie des noeuds de départ et arrivée pour que le noeud de départ soit inférieur au noeud d'arrivé nécessaire pour les fonctions suivante
+    #copié du code de MC mais l'utilisation d'un tableau avec des clef symétrisé comme pour le code écriture marcherait
     for i in range(Reseau_initial.shape[0]):
         if int(Reseau_initial.values[i][0]) > int(Reseau_initial.values[i][1]):
             a,b=Reseau_initial.values[i][0],Reseau_initial.values[i][1]
@@ -29,10 +33,11 @@ def verification_RI_TR(Num_reseau):
     X=Noeuds['X'].values.tolist()
     Y=Noeuds['Y'].values.tolist()
     Num_noeuds=Noeuds['Numero du noeud'].values.tolist()
+    #trace du reseau de depart et d'arrivee
     trace_reseau(X,Y,Num_noeuds,Reseau_initial)
     trace_reseau(X,Y,Num_noeuds,Reseau_final)
 
-    #Topology Validator reseau initial
+    #Topology Validator reseau initial (cration des matrice Mi pour points isolé et M pour N-1)
     max_num_nodes=max(Num_noeuds)
     M= [[0 for _ in range(max_num_nodes)] for _ in range(max_num_nodes)]
     Mi = [[0 for _ in range(max_num_nodes)] for _ in range(max_num_nodes)]
@@ -50,6 +55,7 @@ def verification_RI_TR(Num_reseau):
                 source_node.append(Noeuds.values[i][0])
     pts_isoles=network_topology_validator(Mi,max_num_nodes,source_node)
     compteur_ok=0
+    #boucle pour vérification des conditions N-1
     for node in source_node:
         M_test=[row[:] for row in M]
         noeud_remove=setdiff(source_node,[node])
@@ -64,7 +70,7 @@ def verification_RI_TR(Num_reseau):
         print("RI: condition n-1 respecté pour tout les noeuds sources")
     else:
         print("RI: n-1 non respecté")
-    #Topology Validator reseau final
+    #Topology Validator reseau final code analogue mais pour le réseau final
     max_num_nodes=max(Num_noeuds)
     M= [[0 for _ in range(max_num_nodes)] for _ in range(max_num_nodes)]
     Mi = [[0 for _ in range(max_num_nodes)] for _ in range(max_num_nodes)]
@@ -101,11 +107,11 @@ def verification_RI_TR(Num_reseau):
     I,V=lf(network)
     if len(I) !=0:
         for k in range (len(Reseau_initial.values[5])):
-            if I[k]>Reseau_initial.values[k][5]:
+            if I[k]>Reseau_initial.values[k][5]: #verification du courant max
                 print("contraintes courant")
         for v in V:
             if v>1.05 or v<0.95:
-                print("contraintes tension")
+                print("contraintes tension") #vérification des tension max et min (chute de tension)
 
 #lf check TR
     network=network_for_lf(Num_noeuds,Noeuds,Reseau_final,Parametres)
