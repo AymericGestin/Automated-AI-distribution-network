@@ -29,6 +29,24 @@ def start_docker_desktop():
 
     except Exception as e:
         print(f"Failed to start Docker Desktop: {e}")
+#permet de savoir si le container portant le même nom existe deja pour ensuite le supprimer si c'est le cas
+def check_container_exists(container_name):
+    try:
+        # Exécute la commande Docker pour lister les conteneurs (actifs et inactifs)
+        result = subprocess.run(['docker', 'ps', '-a', '--filter', f'name={container_name}', '--format', '{{.Names}}'],
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+        # Vérifie si la sortie contient le nom du conteneur
+        if container_name in result.stdout.splitlines():
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(f"Une erreur s'est produite: {e}")
+        return False
+
+
+
 
 #fonction qui vérifier que docker est lancé et le run si ce n'est pas le cas 
 #run l'image LAPKT avec le dossier Automated-AI-Distribution-Network comme mount dans un container nommé test
@@ -39,17 +57,24 @@ def start_docker_desktop():
 def run_planner(Numero_Reseau,methode="dfs_plus",domain="domainv8.pddl"):
     if is_docker_running() ==False:
         start_docker_desktop()
-        timeout = 60  # Timeout in seconds (1 minutes)
+        timeout = 120  # Timeout in seconds (1 minutes)
         start_time = time.time()
         
         while time.time() - start_time < timeout:
             time.sleep(5)
     if is_docker_running() ==True:
-        ligne1="docker run --name test -it -d --rm -v "+path+":/root/projects/benchmarks lapkt/lapkt-public &&"
-        ligne2="docker exec -it test ./"+methode+" --domain /root/projects/benchmarks/CSV_Problem/"+domain+" --problem /root/projects/benchmarks/CSV_Problem/problem_"+str(Numero_Reseau)+".pddl &&"
-        ligne3="docker exec -it test cp /root/projects/lapkt/compiled_planners/plan.ipc /root/projects/benchmarks/Plan/plan_"+str(Numero_Reseau)+".txt &&"
-        ligne4="docker kill test"
-        command=ligne1+ligne2+ligne3+ligne4
-        os.system(command)
-    return 0
+        if check_container_exists("test")==True:
+            subprocess.run(['docker', 'rm', '-f', "test"], check=True)
+        ligne1 = ["docker", "run", "--name", "test", "-it", "-d", "--rm", "-v", f"{path}:/root/projects/benchmarks", "lapkt/lapkt-public"]
+        ligne2 = ["docker", "exec", "-it", "test", f"./{methode}", 
+            "--domain", f"/root/projects/benchmarks/CSV_Problem/{domain}",
+            "--problem", f"/root/projects/benchmarks/CSV_Problem/problem_{Numero_Reseau}.pddl"]
 
+        ligne3 = ["docker", "exec", "-it", "test", "cp", 
+            "/root/projects/lapkt/compiled_planners/plan.ipc", f"/root/projects/benchmarks/Plan/plan_{Numero_Reseau}.txt"]
+        ligne4 = ["docker", "kill", "test"]
+        subprocess.run(ligne1, check=True)
+        subprocess.run(ligne2, check=True)
+        subprocess.run(ligne3, check=True)
+        subprocess.run(ligne4, check=True)
+    return 0
