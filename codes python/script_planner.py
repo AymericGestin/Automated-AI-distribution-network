@@ -78,3 +78,4 @@ def run_planner(Numero_Reseau,methode="dfs_plus",domain="domainv8.pddl"):
         subprocess.run(ligne3, check=True)
         subprocess.run(ligne4, check=True)
     return 0
+run_planner(6)

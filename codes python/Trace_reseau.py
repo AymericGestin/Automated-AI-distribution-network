@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 # fonction qui trace les réseaux avec la même forme que le code matlab de MC 
 #carré: station primaire; rond rose: station secondaire; ligne pleine: ligne fermé; Ligne point: ouvert
-def trace_reseau(X, Y, Num_noeuds, Reseau_etudie):
-    plt.figure()
+def trace_reseau(X, Y, Num_noeuds, Reseau_etudie,num_figure):
+    fig1=plt.figure()
     #tracé des primary
     plt.plot(X[-2], Y[-2], 's', color='black', markerfacecolor='black')
     plt.text(X[-2], Y[-2], str(Num_noeuds[-2]))
@@ -21,7 +21,7 @@ def trace_reseau(X, Y, Num_noeuds, Reseau_etudie):
         else: #ligne ouverte
             plt.plot([X[int(Reseau_etudie.values[i][0] - 1)], X[int(Reseau_etudie.values[i][1] - 1)]], 
                      [Y[int(Reseau_etudie.values[i][0] - 1)], Y[int(Reseau_etudie.values[i][1] - 1)]], '--b')
-    
+    fig1.canvas.manager.set_window_title(num_figure)
     plt.axis('equal')
-    plt.show()
+
 

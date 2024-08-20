@@ -34,9 +34,9 @@ def verification_RI_TR(Num_reseau):
     Y=Noeuds['Y'].values.tolist()
     Num_noeuds=Noeuds['Numero du noeud'].values.tolist()
     #trace du reseau de depart et d'arrivee
-    trace_reseau(X,Y,Num_noeuds,Reseau_initial)
-    trace_reseau(X,Y,Num_noeuds,Reseau_final)
-
+    trace_reseau(X,Y,Num_noeuds,Reseau_initial,"Reseau initial")
+    trace_reseau(X,Y,Num_noeuds,Reseau_final,"Reseau final")
+    plt.show()
     #Topology Validator reseau initial (cration des matrice Mi pour points isolé et M pour N-1)
     max_num_nodes=max(Num_noeuds)
     M= [[0 for _ in range(max_num_nodes)] for _ in range(max_num_nodes)]

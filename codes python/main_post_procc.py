@@ -1,5 +1,5 @@
 from verification_RI_TR import *
-def post_procc(numero_reseau):
+def post_procc(numero_reseau,affichage=0):
     numero_reseau=str(numero_reseau)
     Reseau_initial,Reseau_final,Noeuds,Parametres=verification_RI_TR(numero_reseau)
     X=Noeuds['X'].values.tolist()
@@ -115,9 +115,9 @@ def post_procc(numero_reseau):
                 if Noeuds.values[i][1] == "Primary substation":
                     source_node.append(Noeuds.values[i][0])
         pts_isoles=network_topology_validator(Mi,max_num_nodes,source_node)
-        compteur_ok_i=0
+        compteur_ok_i=1
         if pts_isoles ==[]:
-            compteur_ok_i=1
+            compteur_ok_i=0
         else:
             print("pts isoles:",pts_isoles)
         compteur_ok=0
@@ -166,10 +166,13 @@ def post_procc(numero_reseau):
         action_groupe=""
         portion_fusion=list_action[indice:num_reseau_fusion]
         for action in portion_fusion:
-            action_groupe=action_groupe+action+"\n"
+            action_groupe=action_groupe+action
         Liste_action_groupe.append(action_groupe)
         indice=num_reseau_fusion
-    # for reseau in Liste_reseau_intermediaire_valide:
-    #     trace_reseau(X,Y,Num_noeuds,reseau)    
-    # trace_reseau(X,Y,Num_noeuds,Reseau_final)
-    # trace_reseau(X,Y,Num_noeuds,Reseau_intermediaire)
+    if affichage==1:
+        k=1
+        for reseau in Liste_reseau_intermediaire_valide:
+            trace_reseau(X,Y,Num_noeuds,reseau,"Reseau intermediaire "+str(k))
+            k+=1
+            plt.show()    
+    return(F_cout[-1],Liste_action_groupe,Liste_reseau_intermediaire_valide)
