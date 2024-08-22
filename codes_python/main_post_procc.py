@@ -1,4 +1,6 @@
 from verification_RI_TR import *
+import pickle
+import copy
 def post_procc(numero_reseau,affichage=0):
     numero_reseau=str(numero_reseau)
     Reseau_initial,Reseau_final,Noeuds,Parametres=verification_RI_TR(numero_reseau)
@@ -154,10 +156,9 @@ def post_procc(numero_reseau,affichage=0):
                 print("pas de containtes électrique")
         if cas1==0 and cas2==0 and compteur_ok==len(source_node) and compteur_ok_i==0:
             Reseau_fusion.append(cont_action)
-            Liste_reseau_intermediaire_valide.append(Reseau_intermediaire)
-        # print(action)
-        # trace_reseau(X,Y,Num_noeuds,Reseau_intermediaire)
-        
+            Liste_reseau_intermediaire_valide.append(copy.deepcopy(Reseau_intermediaire))
+
+
 
     #creation des listes d'actions présentes dans le plan permettant d'être toujours valdie 
     Liste_action_groupe=[]
@@ -169,10 +170,9 @@ def post_procc(numero_reseau,affichage=0):
             action_groupe=action_groupe+action
         Liste_action_groupe.append(action_groupe)
         indice=num_reseau_fusion
-    if affichage==1:
-        k=1
-        for reseau in Liste_reseau_intermediaire_valide:
-            trace_reseau(X,Y,Num_noeuds,reseau,"Reseau intermediaire "+str(k))
-            k+=1
-            plt.show()    
+
+    print("le cout total de l'opération est",F_cout[-1])
+    with open(os.path.join('Reseaux_intermediaires','Reseau_intermediaire_'+str(numero_reseau)+'.pkl'), 'wb') as f:
+        pickle.dump(Liste_reseau_intermediaire_valide, f)
+
     return(F_cout[-1],Liste_action_groupe,Liste_reseau_intermediaire_valide)
