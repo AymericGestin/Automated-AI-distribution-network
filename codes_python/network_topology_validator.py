@@ -3,6 +3,7 @@ def network_topology_validator(M, max_num_nodes, source_node):
     Inputs definition:
     - M = Network connectivity matrix : if node i is connected to node j then
     M[i][j] = 1 and M[j][i] = 1,
+    si égale à 2 signifie qu'il y a la fois une ligne ouverte et fermé (structure en double dérivation)
     - max_num_nodes = node having the highest value in the network,
     - source_node = list of nodes representing the "energy sources"
     """
@@ -17,7 +18,7 @@ def network_topology_validator(M, max_num_nodes, source_node):
     
     while len(C) > 0:
         for node in C:
-            D = [i + 1 for i, connected in enumerate(M[node - 1]) if connected == 1]
+            D = [i + 1 for i, connected in enumerate(M[node - 1]) if connected !=0]
             M[node - 1] = [0] * max_num_nodes
             for i in range(max_num_nodes):
                 M[i][node - 1] = 0

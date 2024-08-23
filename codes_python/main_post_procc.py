@@ -55,7 +55,7 @@ def post_procc(numero_reseau,affichage=0):
                 Line_added=[int(node3[1:]),int(node2[1:])]
             else:
                 Line_added=[int(node2[1:]),int(node3[1:])]
-            for i in range(Reseau_intermediaire.shape[0]-1):
+            for i in range(Reseau_intermediaire.shape[0]-2): #erreur possible à ce niveau la de moncde par rapport au -2
                 if int(Reseau_intermediaire.values[i][0])==Line_removed[0] and int(Reseau_intermediaire.values[i][1])==Line_removed[1]:
                     Reseau_intermediaire=Reseau_intermediaire.drop(Reseau_intermediaire.index[i])
             for i in range(Reseau_final.shape[0]):
@@ -107,8 +107,8 @@ def post_procc(numero_reseau,affichage=0):
         for i in range (Reseau_intermediaire.shape[0]):
             a=int(Reseau_intermediaire.values[i][0]-1)
             b=int(Reseau_intermediaire.values[i][1]-1)
-            M[a][b]=1
-            M[b][a]=1
+            M[a][b]+=1
+            M[b][a]+=1
             if int(Reseau_intermediaire.values[i][2])==0:
                 Mi[a][b]=1
                 Mi[b][a]=1
@@ -128,8 +128,8 @@ def post_procc(numero_reseau,affichage=0):
             noeud_remove=setdiff(source_node,[node])
             for x in noeud_remove:
                 for j in range(max_num_nodes):
-                    M_test[x-1][j]=0
-                    M_test[j][x-1]=0
+                    M_test[x-1][j]+=-1
+                    M_test[j][x-1]+=-1
             pts_isoles=network_topology_validator(M_test,max_num_nodes,source_node)
             if pts_isoles==[]:
                 compteur_ok+=1
@@ -138,8 +138,9 @@ def post_procc(numero_reseau,affichage=0):
         else:
             print("Reseau intermediaire n°"+str(cont_action)+": n-1 non respecté")
     #calcul du load flow pour le reseau intermediaire
+        cas1,cas2=0,0
         if compteur_ok == len(source_node):
-            cas1,cas2=0,0
+            
             network=network_for_lf(Num_noeuds,Noeuds,Reseau_final,Parametres)
             I,V=lf(network)
             if len(I) !=0:

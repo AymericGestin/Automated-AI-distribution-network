@@ -37,15 +37,16 @@ def verification_RI_TR(Num_reseau):
     trace_reseau(X,Y,Num_noeuds,Reseau_initial,"Reseau initial")
     trace_reseau(X,Y,Num_noeuds,Reseau_final,"Reseau final")
     plt.show()
-    #Topology Validator reseau initial (cration des matrice Mi pour points isolé et M pour N-1)
+    #Topology Validator reseau initial (creation des matrice Mi pour points isolé et M pour N-1)
     max_num_nodes=max(Num_noeuds)
     M= [[0 for _ in range(max_num_nodes)] for _ in range(max_num_nodes)]
     Mi = [[0 for _ in range(max_num_nodes)] for _ in range(max_num_nodes)]
     for i in range (Reseau_initial.shape[0]):
         a=int(Reseau_initial.values[i][0]-1)
         b=int(Reseau_initial.values[i][1]-1)
-        M[a][b]=1
-        M[b][a]=1
+        M[a][b]+=1
+        M[b][a]+=1
+        
         if int(Reseau_initial.values[i][2])==0:
             Mi[a][b]=1
             Mi[b][a]=1
@@ -61,8 +62,8 @@ def verification_RI_TR(Num_reseau):
         noeud_remove=setdiff(source_node,[node])
         for x in noeud_remove:
             for j in range(max_num_nodes):
-                M_test[x-1][j]=0
-                M_test[j][x-1]=0
+                M_test[x-1][j]+=-1
+                M_test[j][x-1]+=-1
         pts_isoles=network_topology_validator(M_test,max_num_nodes,source_node)
         if pts_isoles==[]:
             compteur_ok+=1
@@ -77,8 +78,8 @@ def verification_RI_TR(Num_reseau):
     for i in range (Reseau_final.shape[0]):
         a=int(Reseau_final.values[i][0]-1)
         b=int(Reseau_final.values[i][1]-1)
-        M[a][b]=1
-        M[b][a]=1
+        M[a][b]+=1
+        M[b][a]+=1
         if int(Reseau_final.values[i][2])==0:
             Mi[a][b]=1
             Mi[b][a]=1
@@ -93,8 +94,8 @@ def verification_RI_TR(Num_reseau):
         noeud_remove=setdiff(source_node,[node])
         for x in noeud_remove:
             for j in range(max_num_nodes):
-                M_test[x-1][j]=0
-                M_test[j][x-1]=0
+                M_test[x-1][j]+=-1
+                M_test[j][x-1]+=-1
         pts_isoles=network_topology_validator(M_test,max_num_nodes,source_node)
         if pts_isoles==[]:
             compteur_ok+=1
