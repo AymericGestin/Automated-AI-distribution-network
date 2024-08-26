@@ -173,7 +173,7 @@ def post_procc(numero_reseau,affichage=0):
         indice=num_reseau_fusion
 
     print("le cout total de l'opération est",F_cout[-1])
-    with open(os.path.join('Reseaux_intermediaires','Reseau_intermediaire_'+str(numero_reseau)+'.pkl'), 'wb') as f:
+    with open(os.path.join(path,'Reseaux_intermediaires','Reseau_intermediaire_'+str(numero_reseau)+'.pkl'), 'wb') as f:
         pickle.dump(Liste_reseau_intermediaire_valide, f)
 
     return(F_cout[-1],Liste_action_groupe,Liste_reseau_intermediaire_valide)

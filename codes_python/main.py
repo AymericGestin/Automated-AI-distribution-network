@@ -71,7 +71,7 @@ class FigureNavigator:
         self.update_figure(self.current_index)
 
 if ordre_trace=="oui":
-    with open(os.path.join('Reseaux_intermediaires','Reseau_intermediaire_'+str(numero_reseau)+'.pkl'), 'rb') as f:
+    with open(os.path.join(path,'Reseaux_intermediaires','Reseau_intermediaire_'+str(numero_reseau)+'.pkl'), 'rb') as f:
         Reseau_intermediaire_valide = pickle.load(f)
         k=1
         figures_data=[]
