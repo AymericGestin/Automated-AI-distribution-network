@@ -1,6 +1,8 @@
 from verification_RI_TR import *
 import pickle
 import copy
+from cherche_boucles import cherche_boucles
+
 def post_procc(numero_reseau,affichage=0):
     numero_reseau=str(numero_reseau)
     Reseau_initial,Reseau_final,Noeuds,Parametres=verification_RI_TR(numero_reseau)
@@ -24,7 +26,7 @@ def post_procc(numero_reseau,affichage=0):
     Liste_reseau_intermediaire_valide=[]
     Liste_reseau_intermediaire_non_valide=[]
     indicateur_cas=0
-
+    Bus=[]
     for action in list_action[:len(list_action)-1]:
         cont_action+=1
         b=action.split()
@@ -117,12 +119,38 @@ def post_procc(numero_reseau,affichage=0):
                 if Noeuds.values[i][1] == "Primary substation":
                     source_node.append(Noeuds.values[i][0])
         pts_isoles=network_topology_validator(Mi,max_num_nodes,source_node)
-        compteur_ok_i=1
+        compteur_ok_i=1 #compteur de point isolé si il y a des point isolés:1 ou sinon: 0 
         if pts_isoles ==[]:
             compteur_ok_i=0
         else:
             print("pts isoles:",pts_isoles)
-        compteur_ok=0
+            if indicateur_cas == 1 or indicateur_cas == 2:
+
+                # On ferme la ligne et on refait un test de validation de topo.
+                Mi[int(Reseau_intermediaire.values[-1][0]) - 1][int(Reseau_intermediaire.values[-1][1]) - 1] = 1
+                Mi[int(Reseau_intermediaire.values[-1][1]) - 1][int(Reseau_intermediaire.values[-1][0]) - 1] = 1
+
+                pts_isoles_i = network_topology_validator(Mi, max_num_nodes, source_node)
+                
+                if pts_isoles_i == []:  # si pas de points isolés alors on laisse la ligne fermée
+                    compteur_ok_i += 1
+                    Reseau_intermediaire.values[-1][2] = 0
+
+                    print("Il n'y a plus de point isolé, il faut vérifier la présence de cycle et ouvrir une ligne le cas échéant pour que le réseau reste radial")
+
+                    if sum([1 for row in Reseau_intermediaire if row[2] == 0]) > len(Bus) - 2:  # présence de cycle dans le réseau?
+                        print("l'ajout de la ligne fermée a créé un cycle et il faut ouvrir une ligne")
+                        Candidats = cherche_boucles(Reseau_intermediaire, max_num_nodes, source_node, Reseau_final)
+                        Candidats_1 = [c for c in Candidats if c[1] == 3]  # On cherche les lignes qui ne feront pas partis du réseau final et on en ouvre une
+                        Selection = Candidats_1[0][0]
+                        Reseau_intermediaire.values[int(Selection)][2] = 1
+
+                else:
+                    print("Topologie non valide -> points isolés donc on rouvre la ligne")  # On ne fait pas le loadflow et on passe directement au réseau
+                    Mi[int(Reseau_intermediaire.values[-1][0]) - 1][int(Reseau_intermediaire.values[-1][1]) - 1] = 0
+                    Mi[int(Reseau_intermediaire.values[-1][1]) - 1][int(Reseau_intermediaire.values[-1][0]) - 1] = 0
+
+        compteur_ok=0 #compteur condition n-1
         for node in source_node:
             M_test=[row[:] for row in M]
             noeud_remove=setdiff(source_node,[node])
@@ -137,11 +165,13 @@ def post_procc(numero_reseau,affichage=0):
             print("Reseau intermediaire n°"+str(cont_action)+": condition n-1 respecté pour tout les noeuds sources")
         else:
             print("Reseau intermediaire n°"+str(cont_action)+": n-1 non respecté")
+
     #calcul du load flow pour le reseau intermediaire
         cas1,cas2=0,0
-        if compteur_ok == len(source_node):
+        if compteur_ok == len(source_node) and compteur_ok_i==0:
             
-            network=network_for_lf(Num_noeuds,Noeuds,Reseau_final,Parametres)
+            network=network_for_lf(Num_noeuds,Noeuds,Reseau_intermediaire,Parametres)
+            Bus=network["bus"]
             I,V=lf(network)
             if len(I) !=0:
                 for k in range (len(Reseau_initial.values[5])):

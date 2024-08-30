@@ -1,4 +1,4 @@
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import os
 from main_post_procc import *
 path=os.path.dirname(os.path.dirname(__file__))
