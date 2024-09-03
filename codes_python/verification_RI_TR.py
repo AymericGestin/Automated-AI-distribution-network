@@ -107,21 +107,21 @@ def verification_RI_TR(Num_reseau):
     network=network_for_lf(Num_noeuds,Noeuds,Reseau_initial,Parametres)
     I,V=lf(network)
     if len(I) !=0:
-        for k in range (len(Reseau_initial.values[5])):
-            if I[k]>Reseau_initial.values[k][5]: #verification du courant max
+        for k in range (Reseau_initial.shape[0]):
+            if abs(I[k])>Reseau_initial.values[k][5]: #verification du courant max
                 print("contraintes courant")
         for v in V:
-            if v>1.05 or v<0.95:
+            if abs(v)>1.05 or abs(v)<0.95:
                 print("contraintes tension") #vérification des tension max et min (chute de tension)
 
 #lf check TR
     network=network_for_lf(Num_noeuds,Noeuds,Reseau_final,Parametres)
     I,V=lf(network)
     if len(I) !=0:
-        for k in range (len(Reseau_initial.values[5])):
-            if I[k]>Reseau_initial.values[k][5]:
+        for k in range (Reseau_final.shape[0]):
+            if abs(I[k])>Reseau_final.values[k][5]:
                 print("contraintes courant")
         for v in V:
-            if v>1.05 or v<0.95:
+            if abs(v)>1.05 or abs(v)<0.95:
                 print("contraintes tension")
     return Reseau_initial,Reseau_final,Noeuds,Parametres

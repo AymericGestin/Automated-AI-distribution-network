@@ -15,7 +15,7 @@ def work_flow(numero_reseau):
     cout,action,reseau=post_procc(numero_reseau)
     return reseau,action
 reseau,action=work_flow(numero_reseau)
-ordre_trace=input("voulez-vous tracer les réseaux intermédiaires ? (oui/non)")
+ordre_trace=input("voulez-vous tracer les réseaux intermédiaires valide ? (oui/non)")
 
 #test d'affichage
 

@@ -135,15 +135,16 @@ def post_procc(numero_reseau,affichage=0):
                 if pts_isoles_i == []:  # si pas de points isolés alors on laisse la ligne fermée
                     compteur_ok_i += 1
                     Reseau_intermediaire.values[-1][2] = 0
-
+                    Candidats = cherche_boucles(Reseau_intermediaire, max_num_nodes, source_node, Reseau_final)
                     print("Il n'y a plus de point isolé, il faut vérifier la présence de cycle et ouvrir une ligne le cas échéant pour que le réseau reste radial")
-
+                    print(sum([1 for row in Reseau_intermediaire if row[2] == 0]) > len(Bus) - 2)
                     if sum([1 for row in Reseau_intermediaire if row[2] == 0]) > len(Bus) - 2:  # présence de cycle dans le réseau?
                         print("l'ajout de la ligne fermée a créé un cycle et il faut ouvrir une ligne")
                         Candidats = cherche_boucles(Reseau_intermediaire, max_num_nodes, source_node, Reseau_final)
+                        print(Candidats)
                         Candidats_1 = [c for c in Candidats if c[1] == 3]  # On cherche les lignes qui ne feront pas partis du réseau final et on en ouvre une
                         Selection = Candidats_1[0][0]
-                        Reseau_intermediaire.values[int(Selection)][2] = 1
+                        Reseau_intermediaire.iloc[int(Selection),2] = 1
 
                 else:
                     print("Topologie non valide -> points isolés donc on rouvre la ligne")  # On ne fait pas le loadflow et on passe directement au réseau
@@ -174,13 +175,13 @@ def post_procc(numero_reseau,affichage=0):
             Bus=network["bus"]
             I,V=lf(network)
             if len(I) !=0:
-                for k in range (len(Reseau_initial.values[5])):
+                for k in range (Reseau_intermediaire.shape[0]):
                     
-                    if I[k]>Reseau_initial.values[k][5]:
-                        print("contraintes courant pour le reseau n°"+str(cont_action))
+                    if abs(I[k])>Reseau_intermediaire.values[k][5]:
+                        print("contraintes courant pour le reseau n°"+str(cont_action)+": il faut renforcer la ligne "+str(Reseau_intermediaire.values[k][0])+" "+str(Reseau_intermediaire.values[k][1]))
                         cas1=1
                 for v in V:
-                    if v>1.05 or v<0.95:
+                    if abs(v)>1.05 or abs(v)<0.95:
                         print("contraintes tension pour le reseau n°"+str(cont_action))
                         cas2=1
             if cas1 ==0 and cas2==0:

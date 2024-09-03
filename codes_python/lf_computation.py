@@ -32,7 +32,7 @@ def lf(network):
         # Calculate currents in each branch
         I = np.zeros(len(branch), dtype=complex)
         for i in range(len(branch)):
-            I[i] = (V[from_bus[i]] - V[to_bus[i]]) * Y[i]*(S_base/V_base*1000)
+            I[i] = (V[from_bus[i]] - V[to_bus[i]]) * Y[i]*(S_base/V_base*1000/np.sqrt(3))
 
         # Print results (pour regarder les valuers de sortie de tension et courant)
         # print("Bus Voltages (p.u.):")
