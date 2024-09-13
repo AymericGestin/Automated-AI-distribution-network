@@ -21,7 +21,8 @@ def verification_RI_TR(Num_reseau):
     Sbase=Parametres.values[1][1]
     Ubase=Parametres.values[2][1]
     #trie des noeuds de départ et arrivée pour que le noeud de départ soit inférieur au noeud d'arrivé nécessaire pour les fonctions suivante
-    #copié du code de MC mais l'utilisation d'un tableau avec des clef symétrisé comme pour le code écriture marcherait
+    #copié du code de MC mais l'utilisation d'un dictionnaire avec des clef symétrisé comme pour le code écriture marcherait et permettrait d'utiliser 
+    # des chaînes de caractères au lieu des entiers
     for i in range(Reseau_initial.shape[0]):
         if int(Reseau_initial.values[i][0]) > int(Reseau_initial.values[i][1]):
             a,b=Reseau_initial.values[i][0],Reseau_initial.values[i][1]

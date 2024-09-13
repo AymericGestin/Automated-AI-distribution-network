@@ -9,7 +9,7 @@ from Trace_reseau import trace_reseau
 #run_planner(10) # ne marche pas pour le reseau 10 les primaires ont l'air de changer de position donc peut être un probleme dans l'excel
 numero_reseau=input("choissisez un numero de reseau")
 def work_flow(numero_reseau):
-    f_xlxs_to_csv(numero_reseau)
+    f_xlxs_to_csv(numero_reseau)  
     ecriture_problem(numero_reseau)
     run_planner(numero_reseau)
     cout,action,reseau=post_procc(numero_reseau)
